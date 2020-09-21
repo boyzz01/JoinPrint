@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".Login">
+    tools:context=".View.Login">
 
     <TextView
         android:layout_width="wrap_content"
@@ -14,7 +14,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="48dp"
 
-        android:text="Hello there, \nWelcome Back"
+        android:text="@string/tvWelcome"
         android:textColor="#000"
         android:textSize="40sp"
         android:textStyle="bold"
@@ -30,7 +30,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
         android:layout_marginBottom="16dp"
-        android:text="Sign In to continue"
+        android:text="@string/tvSignIn"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/username"
         app:layout_constraintStart_toStartOf="parent" />
@@ -44,7 +44,7 @@
         android:layout_marginTop="350dp"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
-        android:hint="Username"
+        android:hint="@string/hintUsername"
         app:boxStrokeColor="@color/blue"
         app:boxStrokeWidth="5dp"
         app:hintAnimationEnabled="true"
@@ -67,7 +67,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
-        android:hint="Password"
+        android:hint="@string/hintPassword"
         app:boxStrokeColor="@color/blue"
         app:boxStrokeWidth="5dp"
         app:hintAnimationEnabled="true"
@@ -88,7 +88,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:background="@drawable/round"
-        android:text="Login"
+        android:text="@string/buttonLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />

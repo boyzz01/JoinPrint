@@ -1,6 +1,6 @@
-package com.ard.joinprint
+package com.ard.joinprint.View
 
-import android.app.ProgressDialog
+
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -14,13 +14,15 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ard.joinprint.API.BaseApiService
 import com.ard.joinprint.API.UtilsApi.aPIService
 import com.ard.joinprint.Adapter.AdapterMaterial
 import com.ard.joinprint.Model.RawMaterial
 import com.ard.joinprint.Model.Response.ListRawMaterialResponse
 import com.ard.joinprint.Model.Response.ListStoreResponse
 import com.ard.joinprint.Model.Store
+import com.ard.joinprint.Util.PrefManager
+import com.ard.joinprint.R
+import com.ard.joinprint.Util.LoadingDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,7 +39,6 @@ class MainActivity : AppCompatActivity() {
     var actionBar: ActionBar? = null
     var storeList: List<Store>? = null
     var rawMaterials: List<RawMaterial>? = null
-    var paginationList: List<RawMaterial>? = null
     var searchList: MutableList<RawMaterial>? = null
 
 
@@ -66,7 +67,8 @@ class MainActivity : AppCompatActivity() {
     private fun loadStore() {
 
         storeList = ArrayList<Store>()
-        val progressDialog = ProgressDialog.show(this@MainActivity, null, "Please Wait...", true, false)
+        val loadingDialog = LoadingDialog(this@MainActivity)
+        loadingDialog.startLoadingDialog()
 
         aPIService!!.listStoreRequest("Bearer $accessToken")!!.enqueue(object :Callback<ListStoreResponse?>
         {
@@ -77,7 +79,7 @@ class MainActivity : AppCompatActivity() {
                 if (response.isSuccessful()) {
 
                     storeList = response.body()!!.data
-                    progressDialog.dismiss()
+                    loadingDialog.dismissDialog()
                     val builderSingle = AlertDialog.Builder(this@MainActivity)
                     //builderSingle.setIcon(R.drawable.ic_launcher);
                     builderSingle.setTitle("Please Select One Store-")
@@ -104,7 +106,7 @@ class MainActivity : AppCompatActivity() {
             override fun onFailure(call: Call<ListStoreResponse?>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "Error : " + t.message, Toast.LENGTH_SHORT)
                     .show()
-                progressDialog.dismiss()
+                loadingDialog.dismissDialog()
             }
 
         })
@@ -113,7 +115,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadMaterial(storeId: String) {
-        val progressDialog = ProgressDialog.show(this@MainActivity, null, "Please Wait...", true, false)
+        val loadingDialog = LoadingDialog(this@MainActivity)
+        loadingDialog.startLoadingDialog()
         aPIService!!.listRawMaterial("Bearer $accessToken", storeId)!!.enqueue(object : Callback<ListRawMaterialResponse?> {
             override fun onResponse(
                 call: Call<ListRawMaterialResponse?>,
@@ -128,14 +131,14 @@ class MainActivity : AppCompatActivity() {
                         rawMaterials as MutableList<RawMaterial>
                     )
                     rvMaterial.adapter = adapterMaterial
-                    progressDialog.dismiss()
+                    loadingDialog.dismissDialog()
                 }
             }
 
             override fun onFailure(call: Call<ListRawMaterialResponse?>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "Error : " + t.message, Toast.LENGTH_SHORT)
                     .show()
-                progressDialog.dismiss()
+                loadingDialog.dismissDialog()
             }
         })
     }

@@ -1,4 +1,20 @@
 <resources>
-    <string name="app_name">Join Print Test</string>
+    <string name="app_name">tespro</string>
     <string name="logout">Logout</string>
+    <string name="textview_id">ID</string>
+    <string name="textview_sku">SKU</string>
+    <string name="textview_unit">Unit</string>
+    <string name="textview_price">Price</string>
+    <string name="textview_supplier">Supplier</string>
+    <string name="textview_store_list">Store List</string>
+    <string name="tvWelcome">Hello there, \nWelcome Back</string>
+    <string name="tvSignIn">Sign In to continue</string>
+    <string name="hintUsername">Username</string>
+    <string name="hintPassword">Password</string>
+    <string name="buttonLogin">Login</string>
+    <string name="tv_material_name">Material Name :</string>
+    <string name="tv_material_price">Material Price :</string>
+    <string name="tvWarehouse">Warehouse List</string>
+    <string name="loadingText">Please Wait...</string>
+    <string name="loadingTv">Loading</string>
 </resources>

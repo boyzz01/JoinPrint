@@ -1,17 +1,17 @@
-package com.ard.joinprint
+package com.ard.joinprint.View
 
-import android.app.ProgressDialog
+
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.ard.joinprint.API.BaseApiService
 import com.ard.joinprint.API.UtilsApi.aPIService
 import com.ard.joinprint.Model.Response.TokenResponse
-import com.google.android.material.textfield.TextInputLayout
+import com.ard.joinprint.Util.PrefManager
+import com.ard.joinprint.R
+import com.ard.joinprint.Util.LoadingDialog
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -26,7 +26,6 @@ class Login : AppCompatActivity() {
 
     var uname: String? = null
     var pass: String? = null
-
     var tokenResponse: TokenResponse? = null
     var prefManager: PrefManager? = null
 
@@ -36,7 +35,6 @@ class Login : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
 
-
         btn_Login.setOnClickListener(View.OnClickListener {
             uname = username.editText!!.text.toString()
             pass = password.editText!!.text.toString()
@@ -44,7 +42,8 @@ class Login : AppCompatActivity() {
             val clientId = "7"
             val clientSecret = "7NDniuscI4542dXzaUiCTN79iIuuMNiQ0wcItmxa"
             tokenResponse = TokenResponse()
-            val progressDialog = ProgressDialog.show(this@Login, null, "Please Wait...", true, false)
+            val loadingDialog = LoadingDialog(this@Login)
+            loadingDialog.startLoadingDialog()
             aPIService!!.tokenRequest(grantType, clientId, clientSecret, uname, pass)!!
                 .enqueue(object : Callback<TokenResponse?> {
                     override fun onResponse(
@@ -59,7 +58,7 @@ class Login : AppCompatActivity() {
                                 tokenResponse!!.accessToken,
                                 tokenResponse!!.refreshToken
                             )
-                            progressDialog.dismiss()
+                            loadingDialog.dismissDialog()
                             val intent = Intent(this@Login, MainActivity::class.java)
                             startActivity(intent)
                             finish()
@@ -76,17 +75,17 @@ class Login : AppCompatActivity() {
                                         "Error : $errorMessage",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    progressDialog.dismiss()
+                                    loadingDialog.dismissDialog()
                                 } catch (e: JSONException) {
                                     e.printStackTrace()
-                                    progressDialog.dismiss()
+                                    loadingDialog.dismissDialog()
                                 } catch (e: IOException) {
                                     e.printStackTrace()
-                                    progressDialog.dismiss()
+                                    loadingDialog.dismissDialog()
                                 }
-                                progressDialog.dismiss()
+                                loadingDialog.dismissDialog()
                             }
-                            progressDialog.dismiss()
+                            loadingDialog.dismissDialog()
                         } else {
                         }
                     }
@@ -94,7 +93,7 @@ class Login : AppCompatActivity() {
                     override fun onFailure(call: Call<TokenResponse?>, t: Throwable) {
                         Toast.makeText(this@Login, "Error : " + t.message, Toast.LENGTH_SHORT)
                             .show()
-                        progressDialog.dismiss()
+                        loadingDialog.dismissDialog()
                     }
                 })
         })

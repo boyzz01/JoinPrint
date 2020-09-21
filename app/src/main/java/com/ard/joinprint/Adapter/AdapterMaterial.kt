@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.ard.joinprint.MaterialDetail
+import com.ard.joinprint.View.MaterialDetail
 import com.ard.joinprint.Model.RawMaterial
 import com.ard.joinprint.R
 
@@ -50,15 +50,15 @@ class AdapterMaterial(
     }
 
     fun filter(text: String, itemsCopy: MutableList<RawMaterial>?) {
-        var text = text
+        var query = text
         if (text.isEmpty()) {
             rawMaterialList.clear()
             rawMaterialList.addAll(itemsCopy!!)
         } else {
             rawMaterialList.clear()
-            text = text.toLowerCase()
+            query = text.toLowerCase()
             for (item in itemsCopy!!) {
-                if (item.nameEng!!.toLowerCase().contains(text)) {
+                if (item.nameEng!!.toLowerCase().contains(query)) {
                     rawMaterialList.add(item)
                 }
             }

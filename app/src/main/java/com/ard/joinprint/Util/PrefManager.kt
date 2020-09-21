@@ -1,4 +1,4 @@
-package com.ard.joinprint
+package com.ard.joinprint.Util
 
 import android.content.Context
 import android.content.SharedPreferences

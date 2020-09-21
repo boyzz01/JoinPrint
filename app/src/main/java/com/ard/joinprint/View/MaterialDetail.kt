@@ -1,25 +1,24 @@
-package com.ard.joinprint
+package com.ard.joinprint.View
 
-import android.app.ProgressDialog
+
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.widget.ListView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.ard.joinprint.API.BaseApiService
-import com.ard.joinprint.API.UtilsApi
 import com.ard.joinprint.API.UtilsApi.aPIService
 import com.ard.joinprint.Model.RawMaterial
 import com.ard.joinprint.Model.Response.MaterialDetailResponse
 import com.ard.joinprint.Model.Store
 import com.ard.joinprint.Model.Supplier
+import com.ard.joinprint.Util.PrefManager
+import com.ard.joinprint.R
+import com.ard.joinprint.Util.LoadingDialog
 import kotlinx.android.synthetic.main.activity_material_detail.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.reflect.Array
 import java.util.*
 @Suppress("DEPRECATION")
 class MaterialDetail : AppCompatActivity() {
@@ -58,8 +57,8 @@ class MaterialDetail : AppCompatActivity() {
             storeNameList as ArrayList<String>
         )
 
-       val progressDialog =
-            ProgressDialog.show(this@MaterialDetail, null, "Please Wait...", true, false)
+        val loadingDialog = LoadingDialog(this@MaterialDetail)
+        loadingDialog.startLoadingDialog()
         aPIService!!.showRawMaterial("Bearer $bearerToken", rawMaterialId)!!.enqueue(object : Callback<MaterialDetailResponse?> {
             override fun onResponse(
                 call: Call<MaterialDetailResponse?>,
@@ -80,13 +79,13 @@ class MaterialDetail : AppCompatActivity() {
                     (storeNameList as ArrayList<String>).add((i + 1).toString() + ". " + storeList!![i].name)
                 }
                 storeListView.setAdapter(storeAdapter)
-                progressDialog.dismiss()
+                loadingDialog.dismissDialog()
             }
 
             override fun onFailure(call: Call<MaterialDetailResponse?>, t: Throwable) {
                 Toast.makeText(this@MaterialDetail, "Error : " + t.message, Toast.LENGTH_SHORT)
                     .show()
-                progressDialog.dismiss()
+                loadingDialog.dismissDialog()
             }
         })
     }
